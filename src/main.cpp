@@ -68,6 +68,7 @@ void beReceiver(Args &args)
 
   int bytesRecvd = 0;
   char buf[2];
+  string str;
 
   while (1) {
     bytesRecvd = udp.recvRaw(buf, 2, false);
@@ -75,7 +76,10 @@ void beReceiver(Args &args)
     else {
       buf[1] = '\0'; // just to be sure
       cout << "Writing: " << buf << endl;
-      system("autoit3 /AutoIt3ExecuteLine \"Send('test')\"");
+      str = "autoit3 /AutoIt3ExecuteLine \"Send('";
+      str += buf;
+      str += "')\"";
+      system(str.c_str());
     }
   }
 
