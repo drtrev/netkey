@@ -13,7 +13,14 @@ endif(WIN32)
 include_directories( ../include )
 link_directories( ../lib )
 
-set( netkey_SRCS main )
+set( netkey_SRCS main input )
+
+if(WIN32)
+  set( netkey_SRCS ${netkey_SRCS} inputWin )
+else(WIN32)
+  set( netkey_SRCS ${netkey_SRCS} inputLinux )
+endif(WIN32)
+
 set( netkey_LIBS udpraw getopt_basic )
 
 add_executable( netkey ${netkey_SRCS} )

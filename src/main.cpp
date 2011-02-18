@@ -1,6 +1,12 @@
 #include <cstdlib>
+#include <fstream>
 #include "getopt_basic.h"
 #include <iostream>
+#ifdef _WIN32
+#include "inputWin.h"
+#else
+#include "inputLinux.h"
+#endif
 #include <string>
 #include "udpraw.h"
 
@@ -23,6 +29,37 @@ using namespace netkey;
 
 void beSender(Args &args)
 {
+  Udpraw udp;
+  udp.initSender(args.ip.c_str(), args.port);
+
+  Input *input;
+#ifdef _WIN32
+  input = new InputWin;
+#else
+  input = new InputLinux;
+#endif
+
+  char buf[2];
+  bool end = false;
+  int chin = 0; // character in
+
+  cout << "Enter key to send, Q to quit." << endl;
+
+  input->changemode(InputNS::INPUT_INTERACTIVE);
+
+  while (!end) {
+    chin = input->getkeypress(); // wait for keypress
+
+    if (chin != 'Q') {
+      buf[0] = chin;
+      buf[1] = '\0';
+      udp.sendRaw(buf, 2, false);
+    }else end = true;
+  }
+
+  input->changemode(InputNS::INPUT_DEFAULT);
+
+  udp.closeAndCleanup();
 }
 
 void beReceiver(Args &args)
@@ -30,7 +67,21 @@ void beReceiver(Args &args)
   Udpraw udp;
   udp.initReceiver(args.port);
 
-  Sleep(3000);
+  int bytesRecvd = 0;
+  char buf[2];
+
+  while (1) {
+    bytesRecvd = udp.recvRaw(buf, 2, false);
+    if (bytesRecvd < 1) udp.writeError();
+    else {
+      ofstream file("temp.au3");
+      buf[1] = '\0'; // just to be sure
+      cout << "Writing: " << buf << endl;
+      file << "Send(\"" << buf << "\")" << endl;
+      file.close();
+      system("autoit3 temp.au3");
+    }
+  }
 
   udp.closeAndCleanup();
 }
@@ -72,7 +123,7 @@ void processCLAs(int argc, char** argv, Args &args)
   int idx = 0;
   int c = 0;
   
-  while ((c = gob::getopt_basic(argc, argv, "hi:p:", options, &idx)) != -1) {
+  while ((c = gob::getopt_basic(argc, argv, "hi:p:rs", options, &idx)) != -1) {
     switch (c) {
       case 'h':
         usage(args);
