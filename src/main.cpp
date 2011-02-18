@@ -1,5 +1,4 @@
 #include <cstdlib>
-#include <fstream>
 #include "getopt_basic.h"
 #include <iostream>
 #ifdef _WIN32
@@ -74,12 +73,9 @@ void beReceiver(Args &args)
     bytesRecvd = udp.recvRaw(buf, 2, false);
     if (bytesRecvd < 1) udp.writeError();
     else {
-      ofstream file("temp.au3");
       buf[1] = '\0'; // just to be sure
       cout << "Writing: " << buf << endl;
-      file << "Send(\"" << buf << "\")" << endl;
-      file.close();
-      system("autoit3 temp.au3");
+      system("autoit3 /AutoIt3ExecuteLine \"Send('test')\"");
     }
   }
 
