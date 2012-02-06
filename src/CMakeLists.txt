@@ -21,7 +21,8 @@ else(WIN32)
   set( netkey_SRCS ${netkey_SRCS} inputLinux )
 endif(WIN32)
 
-set( netkey_LIBS udpraw getopt_basic )
+# TODO change libs for win/lin
+set( netkey_LIBS udpraw getopt_basic User32 )
 
 add_executable( netkey ${netkey_SRCS} )
 target_link_libraries( netkey ${netkey_LIBS} )

@@ -8,6 +8,7 @@ using std::endl;
 
 InputWin::InputWin()
 {
+  // make input stucture
   
 }
 

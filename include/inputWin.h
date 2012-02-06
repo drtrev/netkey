@@ -3,7 +3,8 @@
 
 #include "input.h"
 #include "Windows.h"
-#include "Winuser.h"
+//#include "Winuser.h"
+#include "WinAble.h"
 
 class InputWin : public Input {
   private:
