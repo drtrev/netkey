@@ -2,11 +2,16 @@
 #define INPUTWIN_H
 
 #include "input.h"
+#include "Windows.h"
+#include "Winuser.h"
 
 class InputWin : public Input {
   private:
+    INPUT myinput;
 
   public:
+    InputWin();
+    ~InputWin();
 
     void changeMode(InputNS::InputMode mode);
     int kbhit();
@@ -16,6 +21,8 @@ class InputWin : public Input {
     // sets mode to interactive, waits for keypress,
     // then resets mode to default
     int waitKey();
+
+    int sendKeytoOS(char key);
 };
 
 #endif

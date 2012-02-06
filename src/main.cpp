@@ -48,9 +48,11 @@ void beSender(Args &args)
     chin = input->waitKey(); // wait for keypress
 
     if (chin != 'Q') {
+
       buf[0] = chin;
       buf[1] = '\0';
       udp.sendRaw(buf, 2, false);
+
     }else end = true;
   }
 
@@ -72,10 +74,14 @@ void beReceiver(Args &args)
     else {
       buf[1] = '\0'; // just to be sure
       cout << "Writing: " << buf << endl;
-      str = "autoit3 /AutoIt3ExecuteLine \"Send('";
-      str += buf;
-      str += "')\"";
-      system(str.c_str());
+
+      //str = "autoit3 /AutoIt3ExecuteLine \"Send('";
+      //str += buf;
+      //str += "')\"";
+      //system(str.c_str());
+
+
+
     }
   }
 

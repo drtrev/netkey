@@ -6,6 +6,15 @@
 using std::cout;
 using std::endl;
 
+InputWin::InputWin()
+{
+  
+}
+
+InputWin::~InputWin()
+{
+}
+
 void InputWin::changeMode(InputNS::InputMode mode)
 {
 }
@@ -29,3 +38,10 @@ int InputWin::waitKey()
 
   return getChin();
 }
+
+int InputWin::sendKeytoOS(char key)
+{
+
+  return 0;
+}
+

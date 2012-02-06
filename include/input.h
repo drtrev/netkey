@@ -24,6 +24,8 @@ class Input {
     // sets mode to interactive, waits for keypress,
     // then resets mode to default
     virtual int waitKey() = 0;
+
+    virtual int sendKeytoOS(char key) = 0;
 };
 
 #endif
