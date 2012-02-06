@@ -10,14 +10,14 @@ class InputLinux : public Input {
     struct termios oldt, newt;
 
   public:
-    void changemode(InputNS::InputMode dir);
+    void changeMode(InputNS::InputMode dir);
     int kbhit();
-    int getchin();
+    int getChin();
 
     // Do everything for you:
     // sets mode to interactive, waits for keypress,
     // then resets mode to default
-    int getkeypress();
+    int waitKey();
 };
 
 #endif

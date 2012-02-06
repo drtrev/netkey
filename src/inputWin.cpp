@@ -6,7 +6,7 @@
 using std::cout;
 using std::endl;
 
-void InputWin::changemode(InputNS::InputMode mode)
+void InputWin::changeMode(InputNS::InputMode mode)
 {
 }
 
@@ -16,16 +16,16 @@ int InputWin::kbhit()
   else return 0;
 }
 
-int InputWin::getchin()
+int InputWin::getChin()
 {
   int c = _getch();
   if (c == 13) c = 10; // convert carriage return to newline
   return c;
 }
 
-int InputWin::getkeypress()
+int InputWin::waitKey()
 {
   while (!_kbhit()) Sleep(100);
 
-  return getchin();
+  return getChin();
 }

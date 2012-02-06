@@ -44,10 +44,8 @@ void beSender(Args &args)
 
   cout << "Enter key to send, Q to quit." << endl;
 
-  input->changemode(InputNS::INPUT_INTERACTIVE);
-
   while (!end) {
-    chin = input->getkeypress(); // wait for keypress
+    chin = input->waitKey(); // wait for keypress
 
     if (chin != 'Q') {
       buf[0] = chin;
@@ -55,8 +53,6 @@ void beSender(Args &args)
       udp.sendRaw(buf, 2, false);
     }else end = true;
   }
-
-  input->changemode(InputNS::INPUT_DEFAULT);
 
   udp.closeAndCleanup();
 }

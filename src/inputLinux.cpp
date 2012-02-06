@@ -9,7 +9,7 @@
 #include <sys/types.h>
 #include <sys/time.h>
 
-void InputLinux::changemode(InputNS::InputMode dir)
+void InputLinux::changeMode(InputNS::InputMode dir)
 {
   if ( dir == InputNS::INPUT_INTERACTIVE )
   {
@@ -39,15 +39,16 @@ int InputLinux::kbhit ()
 
 }
 
-int InputLinux::getchin()
+int InputLinux::getChin()
 {
   return getchar();
 }
 
-int InputLinux::getkeypress()
+int InputLinux::waitKey()
+  // do everything for you
 {
   int ch;
-  changemode(InputNS::INPUT_INTERACTIVE);
+  changeMode(InputNS::INPUT_INTERACTIVE);
   while ( !kbhit() )
   {
     //putchar('.');
@@ -57,7 +58,7 @@ int InputLinux::getkeypress()
 
   ch = getchar();
 
-  changemode(InputNS::INPUT_DEFAULT);
+  changeMode(InputNS::INPUT_DEFAULT);
   return ch;
 }
 

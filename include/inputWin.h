@@ -8,14 +8,14 @@ class InputWin : public Input {
 
   public:
 
-    void changemode(InputNS::InputMode mode);
+    void changeMode(InputNS::InputMode mode);
     int kbhit();
-    int getchin();
+    int getChin();
 
     // Do everything for you:
     // sets mode to interactive, waits for keypress,
     // then resets mode to default
-    int getkeypress();
+    int waitKey();
 };
 
 #endif
