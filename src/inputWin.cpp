@@ -6,11 +6,12 @@
 using std::cout;
 using std::endl;
 
-// TODO remove InputNS:: below
 using namespace InputNS;
 
 InputWin::InputWin()
 {
+  currentMode = INPUT_DEFAULT;
+
   // make input stucture
 
   int inputSize = 4;
@@ -32,8 +33,9 @@ InputWin::~InputWin()
   delete [] in;
 }
 
-void InputWin::changeMode(InputNS::InputMode mode)
+void InputWin::changeMode(InputMode mode)
 {
+  currentMode = mode;
 }
 
 int InputWin::selectStdin()
@@ -44,7 +46,12 @@ int InputWin::selectStdin()
 
 int InputWin::getChin()
 {
-  int c = _getch();
+  int c;
+  if (mode == INPUT_INTERACTIVE) {
+    c = _getch();
+  }else{
+    c = getchar(); // behave like linux in canonical mode - wait for newline
+  }
   if (c == 13) c = 10; // convert carriage return to newline
   return c;
 }
@@ -135,12 +142,12 @@ int InputWin::sendKeytoOS(char key)
   return 0;
 }
 
-int InputWin::getHardcoreKey(InputNS::Hardcore &key)
+int InputWin::getHardcoreKey(Hardcore &key)
 {
   return 0;
 }
 
-int InputWin::sendHardcoretoOS(InputNS::Hardcore key)
+int InputWin::sendHardcoretoOS(Hardcore key)
   // this just sends the virtual key, nothing fancy, will not auto-keyup
 {
   return 0;

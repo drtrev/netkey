@@ -11,6 +11,7 @@ class InputWin : public Input {
   private:
     INPUT *in;
     INPUT initInKeyboard;
+    InputNS::InputMode currentMode;
 
   public:
     InputWin();

@@ -9,11 +9,11 @@
 #include <sys/types.h>
 #include <sys/time.h>
 
-// TODO use namespace InputNS
+using namespace InputNS;
 
-void InputLinux::changeMode(InputNS::InputMode dir)
+void InputLinux::changeMode(InputMode mode)
 {
-  if ( dir == InputNS::INPUT_INTERACTIVE )
+  if ( mode == INPUT_INTERACTIVE )
   {
     tcgetattr( STDIN_FILENO, &oldt);
     newt = oldt;
@@ -66,8 +66,10 @@ int InputLinux::getChin()
   return ch;
 }*/
 
-int InputLinux::getHardcoreKey(InputNS::Hardcore &key)
+int InputLinux::getHardcoreKey(Hardcore &key)
 {
+  // TODO implement
+  return 0;
 }
 
 int InputLinux::getModifiers()
@@ -87,7 +89,7 @@ int InputLinux::sendKeytoOS(char key)
   return 0;
 }
 
-int InputLinux::sendHardcoretoOS(InputNS::Hardcore key)
+int InputLinux::sendHardcoretoOS(Hardcore key)
 {
   return 0;
 }

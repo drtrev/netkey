@@ -10,7 +10,7 @@ class InputLinux : public Input {
     struct termios oldt, newt;
 
   public:
-    void changeMode(InputNS::InputMode dir);
+    void changeMode(InputNS::InputMode mode);
     int selectStdin();
     int getChin();
 

@@ -49,7 +49,7 @@ void beSender(Args &args)
 
   cout << "Enter key to send, Q to quit." << endl;
 
-  input->changeMode(INPUT_INTERACTIVE);
+  //input->changeMode(INPUT_INTERACTIVE);
 
   while (!end) {
     chin = input->getChin(); // wait for keypress
@@ -71,7 +71,7 @@ void beSender(Args &args)
     }else end = true;
   }
 
-  input->changeMode(INPUT_DEFAULT);
+  //input->changeMode(INPUT_DEFAULT);
   udp.closeAndCleanup();
 }
 
