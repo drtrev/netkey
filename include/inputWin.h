@@ -3,12 +3,14 @@
 
 #include "input.h"
 #include "Windows.h"
+// The documentation says we need winuser, but we need winable
 //#include "Winuser.h"
 #include "WinAble.h"
 
 class InputWin : public Input {
   private:
-    INPUT myinput;
+    INPUT *in;
+    INPUT initInKeyboard;
 
   public:
     InputWin();

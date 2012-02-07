@@ -64,6 +64,13 @@ void beReceiver(Args &args)
   Udpraw udp;
   udp.initReceiver(args.port);
 
+  Input *input;
+#ifdef _WIN32
+  input = new InputWin;
+#else
+  input = new InputLinux;
+#endif
+
   int bytesRecvd = 0;
   char buf[2];
   string str;
@@ -74,13 +81,18 @@ void beReceiver(Args &args)
     else {
       buf[1] = '\0'; // just to be sure
       cout << "Writing: " << buf << endl;
+      int temp = (int) buf[0];
+      cout << "as int: " << temp << endl;
 
       //str = "autoit3 /AutoIt3ExecuteLine \"Send('";
       //str += buf;
       //str += "')\"";
       //system(str.c_str());
 
-
+      cout << "Sleeping" << endl;
+      Sleep(2000);
+      cout << "Sending now" << endl;
+      input->sendKeytoOS(buf[0]);
 
     }
   }
