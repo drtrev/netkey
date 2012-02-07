@@ -1,5 +1,6 @@
 #include "inputWin.h"
-#include <conio.h>
+#include <conio.h> // for _getch
+#include <stdio.h> // for getchar
 #include <Windows.h> // for sleep
 #include <iostream>
 
@@ -47,7 +48,7 @@ int InputWin::selectStdin()
 int InputWin::getChin()
 {
   int c;
-  if (mode == INPUT_INTERACTIVE) {
+  if (currentMode == INPUT_INTERACTIVE) {
     c = _getch();
   }else{
     c = getchar(); // behave like linux in canonical mode - wait for newline
