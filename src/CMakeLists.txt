@@ -22,7 +22,7 @@ else(WIN32)
   set( netkey_SRCS ${netkey_SRCS} inputLinux )
 endif(WIN32)
 
-include_directories ( netkey_INCLUDE )
+include_directories ( ${netkey_INCLUDEDIRS} )
 
 add_executable( netkey ${netkey_SRCS} )
 target_link_libraries( netkey ${netkey_LIBS} )

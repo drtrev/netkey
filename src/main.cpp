@@ -80,11 +80,10 @@ void beReceiver(Args &args)
   Udpraw udp;
   udp.initReceiver(args.port);
 
-  Input *input;
 #ifdef _WIN32
-  input = new InputWin;
+  Input *input = new InputWin;
 #else
-  input = new InputLinux;
+  Input *input = new InputLinux;
 #endif
 
   int bytesRecvd = 0;
