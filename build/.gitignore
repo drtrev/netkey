@@ -3,5 +3,6 @@ CMakeFiles
 Makefile
 cmake_install.cmake
 netkey.exe
+netkey
 *~
 *.swp
