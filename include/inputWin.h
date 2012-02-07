@@ -27,7 +27,7 @@ class InputWin : public Input {
 
     int getHardcoreKey(InputNS::Hardcore &key);
 
-    int charToCode(char);
+    //int charToCode(char);
     int getModifiers();
 
     int sendKeytoOS(char key);

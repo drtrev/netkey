@@ -25,7 +25,7 @@ void InputLinux::changeMode(InputNS::InputMode dir)
   }
 }
 
-int InputLinux::kbhit ()
+int InputLinux::selectStdin()
   // check if input stream is readable, like windows _kbhit
   // change terminal mode first
 {
@@ -48,7 +48,7 @@ int InputLinux::getChin()
   return getchar();
 }
 
-int InputLinux::waitKey()
+/*int InputLinux::waitKey()
   // do everything for you
 {
   int ch;
@@ -64,10 +64,16 @@ int InputLinux::waitKey()
 
   changeMode(InputNS::INPUT_DEFAULT);
   return ch;
-}
+}*/
 
 int InputLinux::getHardcoreKey(InputNS::Hardcore &key)
 {
+}
+
+int InputLinux::getModifiers()
+{
+  // TODO implement
+  return 0;
 }
 
 // TODO deleteme

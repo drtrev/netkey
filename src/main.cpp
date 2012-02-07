@@ -1,5 +1,5 @@
 #include <cstdlib>
-#include "getopt_basic.h"
+#include "getopt_basic.h" // TODO why do I have a separate copy of this?
 #include <iostream>
 #ifdef _WIN32
 #include "inputWin.h"
@@ -27,6 +27,10 @@ using namespace netkey;
 
 using namespace InputNS;
 
+//void mysleep(int seconds)
+//{
+//}
+
 void beSender(Args &args)
 {
   Udpraw udp;
@@ -44,6 +48,8 @@ void beSender(Args &args)
   int chin = 0; // character in
 
   cout << "Enter key to send, Q to quit." << endl;
+
+  input->changeMode(INPUT_INTERACTIVE);
 
   while (!end) {
     chin = input->getChin(); // wait for keypress
@@ -65,6 +71,7 @@ void beSender(Args &args)
     }else end = true;
   }
 
+  input->changeMode(INPUT_DEFAULT);
   udp.closeAndCleanup();
 }
 
@@ -99,8 +106,8 @@ void beReceiver(Args &args)
       //str += "')\"";
       //system(str.c_str());
 
-      cout << "Sleeping" << endl;
-      Sleep(2000);
+      //cout << "Sleeping" << endl;
+      //mysleep(2);
       //cout << "Sending now" << endl;
       //input->sendKeytoOS(buf[0]);
 

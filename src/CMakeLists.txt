@@ -14,15 +14,14 @@ include_directories( ../include )
 link_directories( ../lib )
 
 set( netkey_SRCS main input )
+set( netkey_LIBS udpraw getopt_basic )
 
 if(WIN32)
   set( netkey_SRCS ${netkey_SRCS} inputWin )
+  set( netkey_LIBS ${netkey_LIBS} User32 )
 else(WIN32)
   set( netkey_SRCS ${netkey_SRCS} inputLinux )
 endif(WIN32)
-
-# TODO change libs for win/lin
-set( netkey_LIBS udpraw getopt_basic User32 )
 
 add_executable( netkey ${netkey_SRCS} )
 target_link_libraries( netkey ${netkey_LIBS} )
