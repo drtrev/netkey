@@ -12,6 +12,7 @@ class InputWin : public Input {
     INPUT *in;
     INPUT initInKeyboard;
     InputNS::InputMode currentMode;
+    int MAX_INPUT;
 
   public:
     InputWin();
@@ -29,9 +30,10 @@ class InputWin : public Input {
     int getHardcoreKey(InputNS::Hardcore &key);
 
     //int charToCode(char);
-    int getModifiers();
+    char getModifiers();
 
-    int sendKeytoOS(char key);
+    int sendModifierstoOS(char mods, bool down);
+    int sendKeytoOS(char key, bool);
     int sendHardcoretoOS(InputNS::Hardcore key);
 };
 

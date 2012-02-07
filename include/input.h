@@ -43,12 +43,13 @@ class Input {
     // get current modifiers
     //virtual int charToCode(char) = 0;
     //virtual int hardcoreToChar(InputNS::Hardcore key) = 0;
-    virtual int getModifiers() = 0;
+    virtual char getModifiers() = 0;
 
     // ------------------------------------------------
     // --- Sending to OS from character
+    virtual int sendModifierstoOS(char mods, bool down) = 0;
     // this sorts out characters, including pressing shift if necessary, and keyup afterwards
-    virtual int sendKeytoOS(char key) = 0;
+    virtual int sendKeytoOS(char key, bool performShift = true) = 0;
 
     // --- Senidng to OS from hardcore
     // this transmits an OS specific code (e.g. virtual key on windows)

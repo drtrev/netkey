@@ -27,9 +27,14 @@ using namespace netkey;
 
 using namespace InputNS;
 
-//void mysleep(int seconds)
-//{
-//}
+void mysleep(int ms)
+{
+#ifdef WIN32
+  Sleep(ms);
+#else
+  usleep(ms*1000);
+#endif
+}
 
 void beSender(Args &args)
 {
@@ -43,20 +48,22 @@ void beSender(Args &args)
   input = new InputLinux;
 #endif
 
-  char buf[2];
+  char buf[3];
   bool end = false;
   int chin = 0; // character in
 
   cout << "Enter key to send, Q to quit." << endl;
 
-  //input->changeMode(INPUT_INTERACTIVE);
+  input->changeMode(INPUT_INTERACTIVE);
+
+  //Hardcore key;
 
   while (!end) {
     chin = input->getChin(); // wait for keypress
 
     if (chin != 'Q') {
 
-      int mods = input->getModifiers();
+      char mods = input->getModifiers();
       if (mods & MODIFIER_LCONTROL) {
         cout << "left control down" << endl;
       }else cout << "left control up" << endl;
@@ -64,14 +71,18 @@ void beSender(Args &args)
         cout << "right control down" << endl;
       }else cout << "right control up" << endl;
 
-      buf[0] = chin;
-      buf[1] = '\0';
+      buf[0] = mods;
+      buf[1] = chin;
+      buf[2] = '\0';
+      cout << "key: " << chin << endl;
       udp.sendRaw(buf, 2, false);
 
     }else end = true;
+
+    mysleep(1000);
   }
 
-  //input->changeMode(INPUT_DEFAULT);
+  input->changeMode(INPUT_DEFAULT);
   udp.closeAndCleanup();
 }
 
@@ -87,29 +98,30 @@ void beReceiver(Args &args)
 #endif
 
   int bytesRecvd = 0;
-  char buf[2];
+  char buf[3];
   string str;
 
   while (1) {
-    bytesRecvd = udp.recvRaw(buf, 2, false);
+    bytesRecvd = udp.recvRaw(buf, 3, false);
     if (bytesRecvd < 1) udp.writeError();
     else {
-      buf[1] = '\0'; // just to be sure
-      cout << "Received: " << buf << endl;
-      int temp = (int) buf[0];
-      cout << "as int: " << temp << endl;
-      cout << "Not sending to OS" << endl; continue;
+      buf[2] = '\0'; // just to be sure
+      //cout << "Received: " << buf[1] << endl;
+      int temp = (int) buf[1];
+      cout << "received (as int): " << temp << endl;
+      //cout << "Not sending to OS" << endl; continue;
 
       //str = "autoit3 /AutoIt3ExecuteLine \"Send('";
       //str += buf;
       //str += "')\"";
       //system(str.c_str());
 
-      //cout << "Sleeping" << endl;
-      //mysleep(2);
-      //cout << "Sending now" << endl;
-      //input->sendKeytoOS(buf[0]);
-
+      cout << "Sleeping" << endl;
+      mysleep(2000);
+      cout << "Sending mods" << endl;
+      //input->sendModifierstoOS(buf[0], true);
+      input->sendKeytoOS(buf[1], false);
+      //input->sendModifierstoOS(buf[0], false);
     }
   }
 

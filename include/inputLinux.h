@@ -23,7 +23,7 @@ class InputLinux : public Input {
     int getHardcoreKey(InputNS::Hardcore &key);
 
     //int charToCode(char);
-    int getModifiers();
+    char getModifiers();
 
     int sendKeytoOS(char key);
     int sendHardcoretoOS(InputNS::Hardcore key);
