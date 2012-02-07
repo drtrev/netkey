@@ -25,7 +25,11 @@ class InputWin : public Input {
     // then resets mode to default
     int waitKey();
 
+    int charToCode(char);
+    int getModifiers();
+
     int sendKeytoOS(char key);
+    int sendKeyCodetoOS(int vk);
 };
 
 #endif

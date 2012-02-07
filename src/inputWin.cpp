@@ -6,6 +6,8 @@
 using std::cout;
 using std::endl;
 
+using namespace InputNS;
+
 InputWin::InputWin()
 {
   // make input stucture
@@ -53,7 +55,31 @@ int InputWin::waitKey()
   return getChin();
 }
 
+int InputWin::charToCode(char c)
+{
+  return 0;
+}
+
+int InputWin::getModifiers()
+  // return state of modifiers
+  // bits: LSHIFT, RSHIFT, LCONTROL, RCONTROL, LMENU, RMENU
+{
+  int modifiers = 0;
+
+  // if most significant bit is set, key is down
+  SHORT keyinfo = GetAsyncKeyState(VK_LCONTROL);
+  cout << "keyinfo: " << keyinfo << endl;
+  if (((keyinfo >> 8) & 128) == 128) modifiers |= MODIFIER_LCONTROL;
+
+  keyinfo = GetAsyncKeyState(VK_RCONTROL);
+  if (((keyinfo >> 8) & 128) == 128) modifiers |= MODIFIER_RCONTROL;
+
+  return modifiers;
+}
+
 int InputWin::sendKeytoOS(char key)
+  // this deals with upper and lower case chars, i.e. by converting to virtual keys
+  // and sending shift if necessary
 {
   // convert to virtual key
   // (use VkKeyScanEx to specify keyboard layout)
@@ -71,10 +97,13 @@ int InputWin::sendKeytoOS(char key)
 
   if (shiftState == 0) {
     // put in input structure
-    in[0].ki.wVk = vk;
-    in[0].ki.dwFlags = 0;
-    in[1].ki.wVk = vk;
+    in[0] = initInKeyboard;
+    in[0].ki.wVk = vk; // key down
+
+    in[1] = initInKeyboard;
+    in[1].ki.wVk = vk; // key up
     in[1].ki.dwFlags = KEYEVENTF_KEYUP;
+
     inlen = 2;
   }else{
     cout << "Sending shift" << endl;
@@ -100,6 +129,12 @@ int InputWin::sendKeytoOS(char key)
   // send
   SendInput(inlen, in, sizeof(INPUT));
 
+  return 0;
+}
+
+int InputWin::sendKeyCodetoOS(int vk)
+  // this just sends the virtual key, nothing fancy, will not auto-keyup
+{
   return 0;
 }
 

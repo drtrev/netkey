@@ -25,6 +25,7 @@ namespace netkey {
 
 using namespace netkey;
 
+using namespace InputNS;
 
 void beSender(Args &args)
 {
@@ -48,6 +49,15 @@ void beSender(Args &args)
     chin = input->waitKey(); // wait for keypress
 
     if (chin != 'Q') {
+
+      int mods = input->getModifiers();
+      if (mods & MODIFIER_LCONTROL) {
+        cout << "left control down" << endl;
+      }else cout << "left control up" << endl;
+      if (mods & MODIFIER_RCONTROL) {
+        cout << "right control down" << endl;
+      }else cout << "right control up" << endl;
+      continue;
 
       buf[0] = chin;
       buf[1] = '\0';

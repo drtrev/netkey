@@ -3,6 +3,7 @@
 
 namespace InputNS { 
   enum InputMode { INPUT_DEFAULT, INPUT_INTERACTIVE };
+  enum Modifiers { MODIFIER_LSHIFT = (1 << 6), MODIFIER_RSHIFT = (1 << 5), MODIFIER_LCONTROL = (1 << 4), MODIFIER_RCONTROL = (1 << 3), MODIFIER_LMENU = (1 << 2), MODIFIER_RMENU = 1 };
 }
 
 class Input {
@@ -25,7 +26,14 @@ class Input {
     // then resets mode to default
     virtual int waitKey() = 0;
 
+    virtual int charToCode(char) = 0;
+    virtual int getModifiers() = 0;
+
+    // this sorts out characters, including pressing shift if necessary, and keyup afterwards
     virtual int sendKeytoOS(char key) = 0;
+    // this transmits an OS specific code (e.g. virtual key on windows)
+    // which is read from charToCode and getModifiers. In future could have a direct waitKeyCode() or something.
+    virtual int sendKeyCodetoOS(int vk) = 0;
 };
 
 #endif

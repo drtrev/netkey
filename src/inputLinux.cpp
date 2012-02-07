@@ -62,5 +62,20 @@ int InputLinux::waitKey()
   return ch;
 }
 
+int InputLinux::charToCode(char c)
+{
+  return 0;
+}
+
+int InputLinux::sendKeytoOS(char key)
+{
+  return 0;
+}
+
+int InputLinux::sendKeyCodetoOS(int vk)
+{
+  return 0;
+}
+
 #endif
 

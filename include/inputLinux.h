@@ -18,6 +18,11 @@ class InputLinux : public Input {
     // sets mode to interactive, waits for keypress,
     // then resets mode to default
     int waitKey();
+    int charToCode(char);
+    int getModifiers();
+
+    int sendKeytoOS(char key);
+    int sendKeyCodetoOS(int);
 };
 
 #endif
