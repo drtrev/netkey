@@ -17,19 +17,21 @@ class InputWin : public Input {
     ~InputWin();
 
     void changeMode(InputNS::InputMode mode);
-    int kbhit();
+    int selectStdin();
     int getChin();
 
     // Do everything for you:
     // sets mode to interactive, waits for keypress,
     // then resets mode to default
-    int waitKey();
+    //int waitKey();
+
+    int getHardcoreKey(InputNS::Hardcore &key);
 
     int charToCode(char);
     int getModifiers();
 
     int sendKeytoOS(char key);
-    int sendKeyCodetoOS(int vk);
+    int sendHardcoretoOS(InputNS::Hardcore key);
 };
 
 #endif

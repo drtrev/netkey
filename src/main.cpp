@@ -46,7 +46,7 @@ void beSender(Args &args)
   cout << "Enter key to send, Q to quit." << endl;
 
   while (!end) {
-    chin = input->waitKey(); // wait for keypress
+    chin = input->getChin(); // wait for keypress
 
     if (chin != 'Q') {
 
@@ -57,7 +57,6 @@ void beSender(Args &args)
       if (mods & MODIFIER_RCONTROL) {
         cout << "right control down" << endl;
       }else cout << "right control up" << endl;
-      continue;
 
       buf[0] = chin;
       buf[1] = '\0';
@@ -90,9 +89,10 @@ void beReceiver(Args &args)
     if (bytesRecvd < 1) udp.writeError();
     else {
       buf[1] = '\0'; // just to be sure
-      cout << "Writing: " << buf << endl;
+      cout << "Received: " << buf << endl;
       int temp = (int) buf[0];
       cout << "as int: " << temp << endl;
+      cout << "Not sending to OS" << endl; continue;
 
       //str = "autoit3 /AutoIt3ExecuteLine \"Send('";
       //str += buf;
@@ -101,8 +101,8 @@ void beReceiver(Args &args)
 
       cout << "Sleeping" << endl;
       Sleep(2000);
-      cout << "Sending now" << endl;
-      input->sendKeytoOS(buf[0]);
+      //cout << "Sending now" << endl;
+      //input->sendKeytoOS(buf[0]);
 
     }
   }

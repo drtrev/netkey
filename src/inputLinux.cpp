@@ -9,6 +9,8 @@
 #include <sys/types.h>
 #include <sys/time.h>
 
+// TODO use namespace InputNS
+
 void InputLinux::changeMode(InputNS::InputMode dir)
 {
   if ( dir == InputNS::INPUT_INTERACTIVE )
@@ -24,6 +26,8 @@ void InputLinux::changeMode(InputNS::InputMode dir)
 }
 
 int InputLinux::kbhit ()
+  // check if input stream is readable, like windows _kbhit
+  // change terminal mode first
 {
   struct timeval tv;
   fd_set rdfs;
@@ -62,17 +66,22 @@ int InputLinux::waitKey()
   return ch;
 }
 
-int InputLinux::charToCode(char c)
+int InputLinux::getHardcoreKey(InputNS::Hardcore &key)
 {
-  return 0;
 }
+
+// TODO deleteme
+//int InputLinux::charToCode(char c)
+//{
+// return 0;
+//}
 
 int InputLinux::sendKeytoOS(char key)
 {
   return 0;
 }
 
-int InputLinux::sendKeyCodetoOS(int vk)
+int InputLinux::sendHardcoretoOS(InputNS::Hardcore key)
 {
   return 0;
 }

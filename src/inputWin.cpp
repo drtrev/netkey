@@ -6,6 +6,7 @@
 using std::cout;
 using std::endl;
 
+// TODO remove InputNS:: below
 using namespace InputNS;
 
 InputWin::InputWin()
@@ -35,7 +36,7 @@ void InputWin::changeMode(InputNS::InputMode mode)
 {
 }
 
-int InputWin::kbhit()
+int InputWin::selectStdin()
 {
   if (_kbhit()) return 1;
   else return 0;
@@ -48,17 +49,19 @@ int InputWin::getChin()
   return c;
 }
 
-int InputWin::waitKey()
-{
-  while (!_kbhit()) Sleep(100);
+// eh? getChin blocks
+//int InputWin::waitKey()
+//{
+ // while (!_kbhit()) Sleep(100);
 
-  return getChin();
-}
+  //return getChin();
+//}
 
-int InputWin::charToCode(char c)
-{
-  return 0;
-}
+// TODO delete me
+//int InputWin::charToCode(char c)
+//{
+//  return 0;
+//}
 
 int InputWin::getModifiers()
   // return state of modifiers
@@ -132,7 +135,12 @@ int InputWin::sendKeytoOS(char key)
   return 0;
 }
 
-int InputWin::sendKeyCodetoOS(int vk)
+int InputWin::getHardcoreKey(InputNS::Hardcore &key)
+{
+  return 0;
+}
+
+int InputWin::sendHardcoretoOS(InputNS::Hardcore key)
   // this just sends the virtual key, nothing fancy, will not auto-keyup
 {
   return 0;

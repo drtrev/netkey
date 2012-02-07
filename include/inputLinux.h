@@ -11,18 +11,22 @@ class InputLinux : public Input {
 
   public:
     void changeMode(InputNS::InputMode dir);
-    int kbhit();
+    int selectStdin();
     int getChin();
 
     // Do everything for you:
     // sets mode to interactive, waits for keypress,
     // then resets mode to default
-    int waitKey();
-    int charToCode(char);
+    //int waitChin();
+    //
+    //
+    int getHardcoreKey(InputNS::Hardcore &key);
+
+    //int charToCode(char);
     int getModifiers();
 
     int sendKeytoOS(char key);
-    int sendKeyCodetoOS(int);
+    int sendHardcoretoOS(InputNS::Hardcore key);
 };
 
 #endif
