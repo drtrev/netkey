@@ -1,0 +1,7 @@
+Input can return virtual key code or linux equivalent, then we send that, and it gets sent back to OS which knows what to do with it,
+but problem then is app doesn't know what the key is (unless it coverts depending on OS), and can't do Linux to Windows.
+
+So first convert to my own code, then process by app (platform independent) and transmit, then convert to OS code.
+
+
+How is VkKeyScan getting the shift state from a char?
