@@ -5,3 +5,6 @@ So first convert to my own code, then process by app (platform independent) and 
 
 
 How is VkKeyScan getting the shift state from a char? It's a different char when you press shift or ctrl!!
+
+TODO See ReadConsoleInput, ReadConsoleInputA, ReadConsoleInputW etc. for a non conio alternative to _getch
+http://msdn.microsoft.com/en-us/library/windows/desktop/ms684961%28v=vs.85%29.aspx
