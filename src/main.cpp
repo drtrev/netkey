@@ -36,6 +36,21 @@ void mysleep(int ms)
 #endif
 }
 
+void outputbits(int b)
+{
+  cout << "sizeofint: " << sizeof(int) << endl;
+  // assuming int is 4 bytes
+  for (int i = 0; i < 32; i++) {
+    if (i % 8 == 0) cout << "8";
+    else cout << "-";
+  }
+  cout << endl;
+  for (int i = 31; i >=0; i--) {
+    cout << ((b & (1 << i)) >> i);
+  }
+  cout << endl;
+}
+
 void beSender(Args &args)
 {
   Udpraw udp;
@@ -62,6 +77,12 @@ void beSender(Args &args)
     chin = input->getChin(); // wait for keypress
 
     if (chin != 'Q') {
+      
+      cout << "------" << endl;
+      outputbits(chin);
+
+      int temp = (int) chin;
+      cout << "Chin as int: " << temp << endl;
 
       char mods = input->getModifiers();
       if (mods & MODIFIER_LCONTROL) {
@@ -71,9 +92,9 @@ void beSender(Args &args)
         cout << "right control down" << endl;
       }else cout << "right control up" << endl;
 
-      buf[0] = mods;
-      buf[1] = chin;
-      buf[2] = '\0';
+      //buf[0] = mods;
+      buf[0] = chin;
+      buf[1] = '\0';
       cout << "key: " << chin << endl;
       udp.sendRaw(buf, 2, false);
 
@@ -102,12 +123,12 @@ void beReceiver(Args &args)
   string str;
 
   while (1) {
-    bytesRecvd = udp.recvRaw(buf, 3, false);
+    bytesRecvd = udp.recvRaw(buf, 2, false);
     if (bytesRecvd < 1) udp.writeError();
     else {
-      buf[2] = '\0'; // just to be sure
+      buf[1] = '\0'; // just to be sure
       //cout << "Received: " << buf[1] << endl;
-      int temp = (int) buf[1];
+      int temp = (int) buf[0];
       cout << "received (as int): " << temp << endl;
       //cout << "Not sending to OS" << endl; continue;
 
@@ -120,7 +141,7 @@ void beReceiver(Args &args)
       mysleep(2000);
       cout << "Sending mods" << endl;
       //input->sendModifierstoOS(buf[0], true);
-      input->sendKeytoOS(buf[1], false);
+      input->sendKeytoOS(buf[0], false);
       //input->sendModifierstoOS(buf[0], false);
     }
   }

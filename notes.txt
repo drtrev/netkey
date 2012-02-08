@@ -4,4 +4,4 @@ but problem then is app doesn't know what the key is (unless it coverts dependin
 So first convert to my own code, then process by app (platform independent) and transmit, then convert to OS code.
 
 
-How is VkKeyScan getting the shift state from a char?
+How is VkKeyScan getting the shift state from a char? It's a different char when you press shift or ctrl!!

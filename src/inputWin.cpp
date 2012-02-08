@@ -48,6 +48,9 @@ int InputWin::selectStdin()
 
 int InputWin::getChin()
 {
+  // note that ctrl or shift changes character input, i.e. control characters
+  // Ctrl+A = 1, Ctrl+B = 2 etc
+  // and VkKeyScan(key) can successfully work this out at the other end
   int c;
   if (currentMode == INPUT_INTERACTIVE) {
     c = _getch();
@@ -159,7 +162,7 @@ int InputWin::sendKeytoOS(char key, bool performShift)
   }
 
   // send
-  SendInput(inlen, in, sizeof(INPUT));
+  //SendInput(inlen, in, sizeof(INPUT));
 
   return 0;
 }
