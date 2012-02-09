@@ -91,12 +91,15 @@ void beSender(Args &args)
       if (mods & MODIFIER_RCONTROL) {
         cout << "right control down" << endl;
       }else cout << "right control up" << endl;
+      if (mods & MODIFIER_LMENU) {
+        cout << "left menu down" << endl;
+      }else cout << "left menu up" << endl;
 
-      //buf[0] = mods;
-      buf[0] = chin;
-      buf[1] = '\0';
+      buf[0] = mods;
+      buf[1] = chin;
+      buf[2] = '\0';
       cout << "key: " << chin << endl;
-      udp.sendRaw(buf, 2, false);
+      udp.sendRaw(buf, 3, false);
 
     }else end = true;
 
@@ -123,12 +126,12 @@ void beReceiver(Args &args)
   string str;
 
   while (1) {
-    bytesRecvd = udp.recvRaw(buf, 2, false);
+    bytesRecvd = udp.recvRaw(buf, 3, false);
     if (bytesRecvd < 1) udp.writeError();
     else {
-      buf[1] = '\0'; // just to be sure
+      buf[2] = '\0'; // just to be sure
       //cout << "Received: " << buf[1] << endl;
-      int temp = (int) buf[0];
+      int temp = (int) buf[1];
       cout << "received (as int): " << temp << endl;
       //cout << "Not sending to OS" << endl; continue;
 
@@ -140,9 +143,9 @@ void beReceiver(Args &args)
       cout << "Sleeping" << endl;
       mysleep(2000);
       cout << "Sending mods" << endl;
-      //input->sendModifierstoOS(buf[0], true);
-      input->sendKeytoOS(buf[0], false);
-      //input->sendModifierstoOS(buf[0], false);
+      input->sendModifierstoOS(buf[0], true);
+      input->sendKeytoOS(buf[1], false);
+      input->sendModifierstoOS(buf[0], false);
     }
   }
 

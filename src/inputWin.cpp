@@ -88,6 +88,18 @@ char InputWin::getModifiers()
   keyinfo = GetAsyncKeyState(VK_RCONTROL);
   if (((keyinfo >> 8) & 128) == 128) modifiers |= MODIFIER_RCONTROL;
 
+  keyinfo = GetAsyncKeyState(VK_LSHIFT);
+  if (((keyinfo >> 8) & 128) == 128) modifiers |= MODIFIER_LSHIFT;
+
+  keyinfo = GetAsyncKeyState(VK_RSHIFT);
+  if (((keyinfo >> 8) & 128) == 128) modifiers |= MODIFIER_RSHIFT;
+
+  keyinfo = GetAsyncKeyState(VK_LMENU);
+  if (((keyinfo >> 8) & 128) == 128) modifiers |= MODIFIER_LMENU;
+
+  keyinfo = GetAsyncKeyState(VK_RMENU);
+  if (((keyinfo >> 8) & 128) == 128) modifiers |= MODIFIER_RMENU;
+
   return modifiers;
 }
 
@@ -104,15 +116,66 @@ int InputWin::sendModifierstoOS(char mods, bool down)
     else cout << "up" << endl;
     inlen++;
   }
+  if (mods & MODIFIER_RCONTROL) {
+    // put in input structure
+    in[inlen] = initInKeyboard;
+    in[inlen].ki.wVk = VK_RCONTROL;
+    if (!down) in[inlen].ki.dwFlags = KEYEVENTF_KEYUP;
+    cout << "Sending RCONTROL ";
+    if (down) cout << "down" << endl;
+    else cout << "up" << endl;
+    inlen++;
+  }
+  if (mods & MODIFIER_LSHIFT) {
+    // put in input structure
+    in[inlen] = initInKeyboard;
+    in[inlen].ki.wVk = VK_LSHIFT;
+    if (!down) in[inlen].ki.dwFlags = KEYEVENTF_KEYUP;
+    cout << "Sending LSHIFT ";
+    if (down) cout << "down" << endl;
+    else cout << "up" << endl;
+    inlen++;
+  }
+  if (mods & MODIFIER_RSHIFT) {
+    // put in input structure
+    in[inlen] = initInKeyboard;
+    in[inlen].ki.wVk = VK_RSHIFT;
+    if (!down) in[inlen].ki.dwFlags = KEYEVENTF_KEYUP;
+    cout << "Sending RSHIFT ";
+    if (down) cout << "down" << endl;
+    else cout << "up" << endl;
+    inlen++;
+  }
+  if (mods & MODIFIER_LMENU) {
+    // put in input structure
+    in[inlen] = initInKeyboard;
+    in[inlen].ki.wVk = VK_LMENU;
+    if (!down) in[inlen].ki.dwFlags = KEYEVENTF_KEYUP;
+    cout << "Sending LMENU ";
+    if (down) cout << "down" << endl;
+    else cout << "up" << endl;
+    inlen++;
+  }
+  if (mods & MODIFIER_RMENU) {
+    // put in input structure
+    in[inlen] = initInKeyboard;
+    in[inlen].ki.wVk = VK_RMENU;
+    if (!down) in[inlen].ki.dwFlags = KEYEVENTF_KEYUP;
+    cout << "Sending RMENU ";
+    if (down) cout << "down" << endl;
+    else cout << "up" << endl;
+    inlen++;
+  }
 
   if (inlen > MAX_INPUT) { cerr << "inlen too big" << endl; }else
   SendInput(inlen, in, sizeof(INPUT));
   return 0;
 }
 
-int InputWin::sendKeytoOS(char key, bool performShift)
-  // this deals with upper and lower case chars, i.e. by converting to virtual keys
-  // and sending shift if necessary
+int InputWin::sendKeytoOS(char key, bool performCtrlShift)
+  // this deals with upper and lower case chars, and control i.e. by converting to virtual keys
+  // and sending shift if necessary (control+key sends control character, which is correctly identified by VkKeyScan)
+  // This won't get ctrl and shift if input is _getch - it returns the control code
 {
   int temp = (int) key;
   cout << "sendKeytoOS: key: " << temp << endl;
@@ -126,11 +189,12 @@ int InputWin::sendKeytoOS(char key, bool performShift)
   cout << "shiftState: " << shiftState << endl;
   cout << "vk before convert: " << vkscan << endl;
   WORD vk = vkscan & 255;
+  //WORD vk = vkscan;
   cout << "vk after convert: " << vk << endl;
 
   int inlen = 0;
 
-  if (shiftState == 0 || !performShift) {
+  if (shiftState == 0 || !performCtrlShift) {
     // put in input structure
     in[0] = initInKeyboard;
     in[0].ki.wVk = vk; // key down
@@ -141,28 +205,54 @@ int InputWin::sendKeytoOS(char key, bool performShift)
 
     inlen = 2;
   }else{
-    cout << "Sending shift" << endl;
+    int curin = 0;
 
     // put in input structure
-    in[0] = initInKeyboard;
-    in[0].ki.wVk = VK_SHIFT; // shift down
+    if (shiftState & 1) {
+      cout << "Sending shift" << endl;
+      in[curin] = initInKeyboard;
+      in[curin].ki.wVk = VK_SHIFT; // shift down
+      curin++;
+    }
+    if (shiftState & 2) {
+      cout << "Sending control" << endl;
+      in[curin] = initInKeyboard;
+      in[curin].ki.wVk = VK_CONTROL; // ctrl down
+      curin++;
+    }
 
-    in[1] = initInKeyboard;
-    in[1].ki.wVk = vk;       // key down
+    in[curin] = initInKeyboard;
+    in[curin].ki.wVk = vk;       // key down
 
-    in[2] = initInKeyboard;
-    in[2].ki.wVk = vk;       // key up
-    in[2].ki.dwFlags = KEYEVENTF_KEYUP;
+    curin++;
 
-    in[3] = initInKeyboard;
-    in[3].ki.wVk = VK_SHIFT; // shift up
-    in[3].ki.dwFlags = KEYEVENTF_KEYUP;
+    in[curin] = initInKeyboard;
+    in[curin].ki.wVk = vk;       // key up
+    in[curin].ki.dwFlags = KEYEVENTF_KEYUP;
 
-    inlen = 4;
+    curin++;
+
+    if (shiftState & 1) {
+      cout << "Shift up" << endl;
+      in[curin] = initInKeyboard;
+      in[curin].ki.wVk = VK_SHIFT; // shift up
+      in[curin].ki.dwFlags = KEYEVENTF_KEYUP;
+      curin++;
+    }
+
+    if (shiftState & 2) {
+      cout << "Control up" << endl;
+      in[curin] = initInKeyboard;
+      in[curin].ki.wVk = VK_CONTROL; // shift up
+      in[curin].ki.dwFlags = KEYEVENTF_KEYUP;
+      curin++;
+    }
+
+    inlen = curin;
   }
 
   // send
-  //SendInput(inlen, in, sizeof(INPUT));
+  SendInput(inlen, in, sizeof(INPUT));
 
   return 0;
 }
