@@ -8,3 +8,5 @@ How is VkKeyScan getting the shift state from a char? It's a different char when
 
 TODO See ReadConsoleInput, ReadConsoleInputA, ReadConsoleInputW etc. for a non conio alternative to _getch
 http://msdn.microsoft.com/en-us/library/windows/desktop/ms684961%28v=vs.85%29.aspx
+
+Should just use SDL for input!
