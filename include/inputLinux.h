@@ -1,4 +1,4 @@
-#ifndef _MSC_VER
+#if !defined _MSC_VER && !defined MSYS
 #ifndef INPUTLINUX_H
 #define INPUTLINUX_H
 

@@ -1,3 +1,4 @@
+#if defined _MSC_VER || defined MSYS
 #ifndef INPUTWIN_H
 #define INPUTWIN_H
 
@@ -37,4 +38,5 @@ class InputWin : public Input {
     int sendHardcoretoOS(InputNS::Hardcore key);
 };
 
+#endif
 #endif

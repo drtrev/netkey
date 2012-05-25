@@ -1,6 +1,6 @@
 // From http://cboard.cprogramming.com/linux-programming/51531-faq-cached-input-mygetch.html
 
-#ifndef _MSC_VER
+#if !defined _MSC_VER && !defined MSYS
 
 #include "inputLinux.h"
 #include <stdio.h>

@@ -1,3 +1,4 @@
+#if defined _MSC_VER || defined MSYS
 #include "inputWin.h"
 #include <conio.h> // for _getch
 #include <stdio.h> // for getchar
@@ -302,3 +303,4 @@ int InputWin::sendHardcoretoOS(Hardcore key)
   return 0;
 }
 
+#endif
